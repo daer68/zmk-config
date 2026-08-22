@@ -47,6 +47,12 @@ MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS) // Right-hand HRMs.
 /* Tri-layer: holding nav + num together activates sys */
 ZMK_CONDITIONAL_LAYER(sys, NAV NUM, SYS)
 
+/* Bluetooth: tap does nothing, hold 3s clears the current profile's bond */
+ZMK_MACRO(bt_clear, bindings = <&bt BT_CLR>;)
+
+ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
+             flavor = "tap-preferred"; tapping-term-ms = <3000>;)
+
 / {
     keymap {
         compatible = "zmk,keymap";
@@ -60,30 +66,38 @@ ZMK_CONDITIONAL_LAYER(sys, NAV NUM, SYS)
 //                   | xxx  | num  | SPACE|   xxx  |  |  xxx  | BSPC | nav    | ENTER |
             display-name = "def";
             bindings = <
-&kp GRAVE &kp N1        &kp N2      &kp N3       &kp N4       &kp N5                   &kp N6 &kp N7       &kp N8       &kp N9      &kp N0         &kp GRAVE
-&kp TAB   &kp Q         &kp W       &kp E        &kp R        &kp T                    &kp Y  &kp U        &kp I        &kp O       &kp P          &kp MINUS
-&kp ESC   &hml LALT A   &hml LGUI S &hml LSHFT D &hml LCTRL F &kp G                    &kp H  &hmr RCTRL J &hmr RSHFT K &hmr RGUI L &hmr RALT SEMI &kp SQT
-&none     &kp Z         &kp X       &kp C        &kp V        &kp B      XXX    XXX    &kp N  &kp M        &kp COMMA    &kp DOT     &kp FSLH       &kp RSHFT
-                                    XXX          &mo 1        &kp SPC    XXX    XXX    &mo 2  &kp BSPC     &kp RGUI
+&kp GRAVE &kp N1        &kp N2      &kp N3       &kp N4       &kp N5                   &kp N6     &kp N7       &kp N8       &kp N9      &kp N0         &kp GRAVE
+&kp TAB   &kp Q         &kp W       &kp E        &kp R        &kp T                    &kp Y      &kp U        &kp I        &kp O       &kp P          &kp MINUS
+&kp ESC   &hml LALT A   &hml LGUI S &hml LSHFT D &hml LCTRL F &kp G                    &kp H      &hmr RCTRL J &hmr RSHFT K &hmr RGUI L &hmr RALT SEMI &kp SQT
+&none     &kp Z         &kp X       &kp C        &kp V        &kp B      XXX    XXX    &kp N      &kp M        &kp COMMA    &kp DOT     &kp FSLH       &kp RSHFT
+                                    XXX          &mo 1        &kp SPC    XXX    XXX    &kp BSPC   &mo 2        &kp RET
             >;
         };
 
         nav_layer {
 // ------------------------------------------------------------------------------------------------------------
-// | empty for now - fully transparent
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   | PGUP | HOME  |  UP   |  END |       |       |
+// |     |     |     |      |      |      |                   | PGDN | LEFT  | DOWN  | RIGHT|  MENU |       |
+// |     |     |     |      |      |      |   xxx  |  |  xxx  |      | BSPC  |  DEL  |      |       |       |
+//                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
             display-name = "nav";
             bindings = <
-&trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans     &trans &trans &trans &trans &trans &trans
-                     &trans &trans &trans &trans &trans     &trans &trans &trans
+&trans &trans &trans &trans &trans &trans                              &trans    &trans     &trans    &trans     &trans &trans
+&trans &trans &trans &trans &trans &trans                              &kp PG_UP &kp HOME   &kp UP    &kp END    &trans &trans
+&trans &trans &trans &trans &trans &trans                              &kp PG_DN &kp LEFT   &kp DOWN  &kp RIGHT  &kp K_APPLICATION &trans
+&trans &trans &trans &trans &trans &trans &trans &trans                &trans    &kp BACKSPACE &kp DELETE &trans  &trans &trans
+                     &trans &trans &trans &trans &trans                &trans    &trans     &trans
             >;
         };
 
         num_layer {
 // ------------------------------------------------------------------------------------------------------------
-// | empty for now - fully transparent
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |   xxx  |  |  xxx  |      |       |       |      |       |       |
+//                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
             display-name = "num";
             bindings = <
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
@@ -96,14 +110,19 @@ ZMK_CONDITIONAL_LAYER(sys, NAV NUM, SYS)
 
         sys_layer {
 // ------------------------------------------------------------------------------------------------------------
-// | empty for now - fully transparent - reached by holding nav + num together
+// | reached by holding nav + num together
+// |CLR/3s|  1  |  2  |  3   |  4   |  5   |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |   xxx  |  |  xxx  |      |       |       |      |       |       |
+//                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
             display-name = "sys";
             bindings = <
-&trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
+&bt_clear_ht 0 0 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4     &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans &trans &trans     &trans &trans &trans &trans &trans &trans
-                      &trans &trans &trans &trans &trans    &trans &trans &trans
+                     &trans &trans &trans &trans &trans    &trans &trans &trans
             >;
         };
 
