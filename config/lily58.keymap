@@ -24,7 +24,8 @@
 #define DEF 0
 #define NAV 1
 #define NUM 2
-#define SYS 3
+#define SYM 3
+#define SYS 4
 
 /* Timeless homerow mods */
 
@@ -44,8 +45,8 @@
 MAKE_HRM(hml, &kp, &kp, KEYS_R THUMBS) // Left-hand HRMs.
 MAKE_HRM(hmr, &kp, &kp, KEYS_L THUMBS) // Right-hand HRMs.
 
-/* Tri-layer: holding nav + num together activates sys */
-ZMK_CONDITIONAL_LAYER(sys, NAV NUM, SYS)
+/* Tri-layer: holding num + sym together activates sys */
+ZMK_CONDITIONAL_LAYER(sys, NUM SYM, SYS)
 
 /* Bluetooth: tap does nothing, hold 3s clears the current profile's bond */
 ZMK_MACRO(bt_clear, bindings = <&bt BT_CLR>;)
@@ -63,14 +64,14 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
 // | TAB |  Q  |  W  |  E   |  R   |  T   |                   |  Y   |  U    |  I    |  O   |   P   |   ]   |
 // | ESC | A/A | S/G | D/S  | F/C  |  G   |                   |  H   | J/C   | K/S   | L/G  |  ;/A  |   '   |
 // | \   |  Z  |  X  |  C   |  V   |  B   |   xxx  |  |  xxx  |  N   |  M    |  ,    |  .   |   /   |   ]   |
-//                   | xxx  | num  | SPACE|   xxx  |  |  xxx  | BSPC | nav    | ENTER |
-            display-name = "def";
+//                   | xxx  | num  |nav/spc| xxx  |  |  xxx  | BSPC | sym  | ENTER |
+            // display-name = "def";
             bindings = <
-&kp GRAVE &kp N1        &kp N2      &kp N3       &kp N4       &kp N5                   &kp N6     &kp N7       &kp N8       &kp N9      &kp N0         &kp GRAVE
-&kp TAB   &kp Q         &kp W       &kp E        &kp R        &kp T                    &kp Y      &kp U        &kp I        &kp O       &kp P          &kp MINUS
-&kp ESC   &hml LALT A   &hml LGUI S &hml LSHFT D &hml LCTRL F &kp G                    &kp H      &hmr RCTRL J &hmr RSHFT K &hmr RGUI L &hmr RALT SEMI &kp SQT
-&none     &kp Z         &kp X       &kp C        &kp V        &kp B      XXX    XXX    &kp N      &kp M        &kp COMMA    &kp DOT     &kp FSLH       &kp RSHFT
-                                    XXX          &mo 1        &kp SPC    XXX    XXX    &kp BSPC   &mo 2        &kp RET
+&kp GRAVE &kp N1        &kp N2      &kp N3       &kp N4       &kp N5                             &kp N6     &kp N7       &kp N8       &kp N9      &kp N0         &kp GRAVE
+&kp TAB   &kp Q         &kp W       &kp E        &kp R        &kp T                              &kp Y      &kp U        &kp I        &kp O       &kp P          &kp MINUS
+&kp ESC   &hml LALT A   &hml LGUI S &hml LSHFT D &hml LCTRL F &kp G                              &kp H      &hmr RCTRL J &hmr RSHFT K &hmr RGUI L &hmr RALT SEMI &kp SQT
+&none     &kp Z         &kp X       &kp C        &kp V        &kp B            XXX        XXX    &kp N      &kp M        &kp COMMA    &kp DOT     &kp FSLH       &kp RSHFT
+                                    XXX          &mo NUM      &lt NAV SPACE    XXX        XXX    &kp BSPC   &mo SYM       &kp RET
             >;
         };
 
@@ -81,7 +82,7 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
 // |     |     |     |      |      |      |                   | PGDN | LEFT  | DOWN  | RIGHT|  MENU |       |
 // |     |     |     |      |      |      |   xxx  |  |  xxx  |      | BSPC  |  DEL  |      |       |       |
 //                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
-            display-name = "nav";
+            display-name = "navigation";
             bindings = <
 &trans &trans &trans &trans &trans &trans                              &trans    &trans     &trans    &trans     &trans &trans
 &trans &trans &trans &trans &trans &trans                              &kp PG_UP &kp HOME   &kp UP    &kp END    &trans &trans
@@ -94,11 +95,28 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
         num_layer {
 // ------------------------------------------------------------------------------------------------------------
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
+// |     |     |     |      |      |      |                   |      |   7   |   8   |   9  |   @   |       |
+// |     |     |     |      |      |      |                   |  -   |   4   |   5   |   6  |       |       |
+// |     |     |     |      |      |      |   xxx  |  |  xxx  |  +   |   1   |   2   |   3  |       |       |
+//                   |      |      |      |   xxx  |  |  xxx  |      |       |   0   |
+            display-name = "number";
+            bindings = <
+&trans &trans &trans &trans &trans &trans                   &trans &trans   &trans   &trans   &trans &trans
+&trans &trans &trans &trans &trans &trans                   &trans &kp N7   &kp N8   &kp N9   &kp AT &trans
+&trans &trans &trans &trans &trans &trans                   &kp MINUS &kp N4 &kp N5  &kp N6   &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans     &kp PLUS &kp N1  &kp N2   &kp N3   &trans &trans
+                     &trans &trans &trans &trans &trans     &trans &trans &kp N0
+            >;
+        };
+
+        sym_layer {
+// ------------------------------------------------------------------------------------------------------------
+// |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |   xxx  |  |  xxx  |      |       |       |      |       |       |
 //                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
-            display-name = "num";
+            display-name = "symbol";
             bindings = <
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
@@ -110,13 +128,13 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
 
         sys_layer {
 // ------------------------------------------------------------------------------------------------------------
-// | reached by holding nav + num together
+// | reached by holding num + sym together
 // |CLR/3s|  1  |  2  |  3   |  4   |  5   |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |   xxx  |  |  xxx  |      |       |       |      |       |       |
 //                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
-            display-name = "sys";
+            display-name = "system";
             bindings = <
 &bt_clear_ht 0 0 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4     &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans                   &trans &trans &trans &trans &trans &trans
