@@ -20,7 +20,7 @@
 
 #define ___ &trans
 #define XXX &none
- 
+
 #define DEF 0
 #define NAV 1
 #define NUM 2
@@ -86,14 +86,14 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
 // ------------------------------------------------------------------------------------------------------------
 // |     |     |     |      |      |      |                   |      |       |       |      |       |       |
 // |     |     |     |      |      |      |                   | PGUP | HOME  |  UP   |  END |       |       |
-// |     |     |     |      |      |      |                   | PGDN | LEFT  | DOWN  | RIGHT|  MENU |       |
+// |     |     |     |      |      |      |                   | PGDN | LEFT  | DOWN  | RIGHT|  MENU | ENTER |
 // |     |     |     |      |      |      |   xxx  |  |  xxx  |      | BSPC  |  DEL  |      |       |       |
 //                   |      |      |      |   xxx  |  |  xxx  |      |       |       |
-            display-name = "navigation";
+            display-name = "navigate";
             bindings = <
 &trans &trans &trans &trans &trans &trans                              &trans    &trans     &trans    &trans     &trans &trans
 &trans &trans &trans &trans &trans &trans                              &kp PG_UP &kp HOME   &kp UP    &kp END    &trans &trans
-&trans &trans &trans &trans &trans &trans                              &kp PG_DN &kp LEFT   &kp DOWN  &kp RIGHT  &kp K_APPLICATION &trans
+&trans &trans &trans &trans &trans &trans                              &kp PG_DN &kp LEFT   &kp DOWN  &kp RIGHT  &kp K_APPLICATION &kp RET
 &trans &trans &trans &trans &trans &trans &trans &trans                &trans    &kp BACKSPACE &kp DELETE &trans  &trans &trans
                      &trans &trans &trans &trans &trans                &trans    &trans     &trans
             >;
@@ -108,11 +108,11 @@ ZMK_HOLD_TAP(bt_clear_ht, bindings = <&bt_clear>, <&none>;
 //                   |      |      |      |   xxx  |  |  xxx  |      |       |   0   |
             display-name = "number";
             bindings = <
-&trans &trans &trans &trans &trans &trans                   &trans &trans   &trans   &trans   &trans &trans
-&trans &trans &trans &trans &trans &trans                   &trans &kp N7   &kp N8   &kp N9   &kp AT &trans
-&trans &trans &trans &trans &trans &trans                   &kp MINUS &kp N4 &kp N5  &kp N6   &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans     &kp PLUS &kp N1  &kp N2   &kp N3   &trans &trans
-                     &trans &trans &trans &trans &trans     &trans &trans &kp N0
+&trans &trans &trans &trans &trans &trans                   &trans    &trans   &trans  &trans   &trans &trans
+&trans &trans &trans &trans &trans &trans                   &trans    &kp N7   &kp N8  &kp N9   &kp AT &trans
+&trans &trans &trans &trans &trans &trans                   &kp MINUS &kp N4   &kp N5  &kp N6   &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans     &kp PLUS  &kp N1   &kp N2  &kp N3   &trans &trans
+                     &trans &trans &trans &trans &trans     &trans    &trans   &kp N0
             >;
         };
 
